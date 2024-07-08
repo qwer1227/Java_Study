@@ -26,4 +26,18 @@ public class StudentRepository {
         }
         throw new SchoolException("해당하는 아이디가 없습니다");
     }
+
+    public void findStudentId(String id){
+        for (Student s : students) {
+            if (s.getId().equals(id)) {
+                throw new SchoolException("입력하신 ID와 동일한 회원이 있습니다");
+            }
+        }
+    }
+
+
+    public void insertStudent(Student student) {
+        students.add(student);
+        System.out.println("회원가입 성공");
+    }
 }

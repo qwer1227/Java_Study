@@ -1,5 +1,6 @@
 package report.repository;
 
+import report.exception.SchoolException;
 import report.vo.Request;
 
 import java.util.ArrayList;
@@ -16,6 +17,17 @@ public class RequestRepository {
         List<Request> req = null;
         for (Request request : requests) {
             if(request.getStuId().equals(id)) {
+                req = requests;
+                return req;
+            }
+        }
+        throw new SchoolException("입력하신 ID에 해당하는 수강내역이 없습니다");
+    }
+
+    public List<Request> findRequestByNo(int requestNo) {
+        List<Request> req = null;
+        for (Request request : requests) {
+            if(request.getCourseNumber() == requestNo) {
                 req = requests;
                 break;
             }

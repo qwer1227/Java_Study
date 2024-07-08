@@ -21,6 +21,11 @@ public class SchoolService {
         return courses;
     }
 
+    public void registerStudent(Student student) {
+        studentRepository.findStudentId(student.getId());
+        studentRepository.insertStudent(student);
+    }
+
     public void registerCourse(String stuId, int courseNo){
         Course course = courseRepository.findCourseByNumber(courseNo);
         Student student = studentRepository.findStudentById(stuId);
@@ -51,6 +56,7 @@ public class SchoolService {
 
         //- 과정정보에서 신청자수를 1증가시킨다.
         course.setCurrentApplicants(course.getCurrentApplicants() + 1);
+        System.out.println("현재 신청자 수 : " +course.getCurrentApplicants());
 
     }
 
@@ -66,5 +72,28 @@ public class SchoolService {
         throw new SchoolException("입력하신 아이디에 해당하는 수강신청내역이 없습니다");
     }
 
+    public void withdrawalCourse(int requestNo){
+        List<Request> requests = requestRepository.findRequestByNo(requestNo);
+        List<Course> courses = courseRepository.getCourses();
+
+        if(requests == null){
+            throw new SchoolException("입력하신 수강신청번호에 해당하는 수강신청 내역이 없습니다");
+        }
+
+        for (Request request : requests) {
+
+
+            for(Course course : courses){
+                if(course.getNo() == request.getCourseNumber()){
+                    request.setWithdrawal(true);
+                    System.out.println("수강이 철회되었습니다");
+                }
+                course.setCurrentApplicants(course.getCurrentApplicants() - 1);
+                System.out.println("현재 신청자 수 : " +course.getCurrentApplicants());
+            }
+
+        }
+
+    }
 
 }
